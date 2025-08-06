@@ -15,7 +15,7 @@ describe('Organization Structure', () => {
   })
 
   // enable add structure
-  it('Add & remove Structure', () => {
+  it('Add Structure', () => {
     cy.visit('/web/index.php/admin/viewCompanyStructure')
     cy.get('.oxd-switch-input').click() // toggle switch to enable adding structure
     cy.get('.oxd-button').click()
@@ -43,8 +43,36 @@ describe('Organization Structure', () => {
     cy.get('.oxd-dialog-container-default--inner')
       .find('.oxd-button--secondary')
       .click()
-
     cy.wait(2000) // wait for the structure to be added
+  })
+
+  // edit Structure
+  it('Edit & remove Structure', () => {
+    cy.visit('/web/index.php/admin/viewCompanyStructure')
+    cy.get('.oxd-switch-input').click() // toggle switch to enable adding structure
+    // ensure the structure exists before editing
+    cy.contains('.oxd-sheet', 'Testing Name Unit ID').should('exist')
+    // click edit icon
+    cy.contains('.oxd-sheet', 'Testing Name Unit ID')
+      .within(() => {
+        cy.get('.oxd-icon-button').eq(1).click() // klik edit, asumsi tombol ke-2
+      })
+    // fill form
+    cy.get('.oxd-dialog-container-default--inner')
+      .find('.oxd-input').eq(0)
+      .should('be.visible')
+      .clear().type('12') // Unit ID
+    cy.get('.oxd-dialog-container-default--inner')
+      .find('.oxd-input').eq(1)
+      .should('be.visible')
+      .clear().type('Testing Name Unit ID - Edited')
+
+    // saving changes
+    cy.get('.oxd-dialog-container-default--inner')
+      .find('.oxd-button--secondary')
+      .click()
+    cy.wait(2000) // wait for the save to complete
+
     // remove Structure
     cy.get('.org-container')
     cy.contains('.oxd-sheet', 'Testing Name Unit ID')

@@ -15,7 +15,7 @@ describe('Organization Location', () => {
   })
 
   // add Location
-  it('add & remove Location', () => {
+  it('add Location', () => {
     cy.visit('/web/index.php/admin/viewLocations')
     cy.get('.oxd-button--secondary').eq(1).click()
     cy.get('.oxd-input').eq(1).type('Test Name')
@@ -31,8 +31,24 @@ describe('Organization Location', () => {
     cy.get('.oxd-textarea').eq(1).type('Test Notes')
 
     cy.get('.oxd-button--secondary').contains('Save').click()
+    cy.wait(3000) // wait for the save to complete
+  })
 
+  // edit & remove Location
+  it('edit and remove Location', () => {
+    cy.visit('/web/index.php/admin/viewLocations')
 
+    // edit the Location
+    cy.get('.oxd-table-row')
+      .contains('Test Name')
+      .parents('.oxd-table-row')
+      .within(() => {
+        cy.get('.oxd-icon-button').last().click()
+      })
+    cy.get('.oxd-input').eq(1).type(' - Edited') // edit the name
+    // click save
+    cy.get('.oxd-button--secondary').click()
+    cy.wait(2000)
     // remove Location
     cy.get('.oxd-table-row')
       .contains('Test Name')
@@ -41,8 +57,6 @@ describe('Organization Location', () => {
         cy.get('.oxd-icon-button').first().click() // click delete icon
       })
     cy.get('.oxd-button--label-danger').click() // confirm delete
-
-
   })
 
 })

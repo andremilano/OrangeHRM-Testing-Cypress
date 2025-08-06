@@ -15,7 +15,7 @@ describe('Admin - Job', () => {
   })
 
   // add new job
-  it('add & remove new job title', () => {
+  it('add job title', () => {
     cy.visit('/web/index.php/admin/viewJobTitleList')
     cy.get('.oxd-button').click()
     cy.get(':nth-child(2) > .oxd-input').type('Test Job Title')
@@ -26,11 +26,27 @@ describe('Admin - Job', () => {
 
     cy.get(':nth-child(4) > .oxd-input-group > :nth-child(2) > .oxd-textarea').type('This is a test job title note')
 
-    // // click save
+    // click save
     cy.get('.oxd-button--secondary').click()
-    cy.wait(2000) // wait for the job title to be added
-    //wait for the job title to be added
-    // cy.visit('/web/index.php/admin/viewJobTitleList')
+    cy.wait(2000)
+  })
+  // edit and remove
+  it('edit and remove job title', () => {
+    cy.visit('/web/index.php/admin/viewJobTitleList')
+
+    // edit the job title
+    cy.get('.oxd-table-row')
+      .contains('Test Job Title')
+      .parents('.oxd-table-row')
+      .within(() => {
+        cy.get('.oxd-icon-button').last().click()
+      })
+    cy.get('.oxd-textarea').eq(0).type(' - Edited') // edit the description
+    // click save
+    cy.get('.oxd-button--secondary').click()
+    cy.wait(2000)
+
+    // delete the job title
     cy.get('.oxd-table-row')
       .contains('Test Job Title')
       .parents('.oxd-table-row')

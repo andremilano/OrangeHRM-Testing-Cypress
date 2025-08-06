@@ -40,6 +40,7 @@ describe('User Manajemen', () => {
 
     // click save
     cy.get('.oxd-button--secondary').click()
+    cy.wait(3000)
   })
 
   // search admin
@@ -50,5 +51,32 @@ describe('User Manajemen', () => {
 
     // check if the admin is found
     cy.get('.oxd-table-row').should('contain', 'joseph.evans')
+
   })
+  // edit admin
+  it('edit & remove admin', () => {
+    // edit the admin
+    cy.visit('/web/index.php/admin/viewSystemUsers')
+
+    cy.get('.oxd-table-row')
+      .contains('joseph.evans')
+      .parents('.oxd-table-row')
+      .within(() => {
+        cy.get('.oxd-icon-button').last().click() // klik icon edit
+      })
+    // Tunggu sampai dialog muncul
+    cy.get('.oxd-input').eq(1).type(' - Edited') // edit username
+    cy.get('.oxd-button--secondary').click() // click save
+    cy.wait(3000) // wait for the admin to be edited
+
+    // delete the admin
+    cy.get('.oxd-table-row')
+      .contains('joseph.evans')
+      .parents('.oxd-table-row')
+      .within(() => {
+        cy.get('.oxd-icon-button').first().click() // klik icon delete
+      })
+    cy.get('.oxd-button--label-danger').click() // konfirmasi delete
+  })
+
 })

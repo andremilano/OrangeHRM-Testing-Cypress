@@ -16,7 +16,7 @@ describe('Admin - Work Shift', () => {
   })
 
   // add new employment status
-  it('add & remove Work Shift', () => {
+  it('add Work Shift', () => {
     cy.visit('/web/index.php/admin/workShift')
     cy.get('.oxd-button--secondary').click()
     cy.get(':nth-child(2) > .oxd-input').type('Test Work Shift')
@@ -35,7 +35,24 @@ describe('Admin - Work Shift', () => {
 
     //save
     cy.get('.oxd-button--secondary').click()
+    cy.wait(3000) // wait for the save to complete
+  })
 
+  // edit & remove
+  it('edit and remove Work Shift', () => {
+    cy.visit('/web/index.php/admin/workShift')
+
+    // edit the work shift
+    cy.get('.oxd-table-row')
+      .contains('Test Work Shift')
+      .parents('.oxd-table-row')
+      .within(() => {
+        cy.get('.oxd-icon-button').last().click()
+      })
+    cy.get('.oxd-input').eq(1).type(' - Edited') // edit the description
+    // click save
+    cy.get('.oxd-button--secondary').click()
+    cy.wait(2000)
     //delete the employment status
     cy.get('.oxd-table-row')
       .contains('Test Work Shift')
